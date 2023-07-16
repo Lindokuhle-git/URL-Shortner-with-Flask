@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>URL-GENERATOR</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    
+</head>
+<body>
+    <form action="/" method="post">
+        <input type="text" name="input" placeholder="Enter your url: ">
+        <button type="submit">Submit</button>
+    </form>
+    <div>
+        {% if result %}
+            Result: {{ result }}
+        {% endif %}
+    </div>
+    
+</body>
+</html>
