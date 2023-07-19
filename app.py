@@ -1,3 +1,5 @@
+import url_database
+
 from flask import Flask, request
 from flask import Flask, render_template, redirect, url_for, session
 
@@ -19,6 +21,7 @@ def index():
 
 def generate_url(url):
     slug = slugify(url)
+    url_database.add_url(url, slug)
     return slug
 
 
