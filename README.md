@@ -20,5 +20,7 @@ Flask can handle URL routing and database operations to store and retrieve the m
 
 
 # Troubleshooting the URL-SHortner project:
-Should any issues arise while running the programme, please email rajuililindokuhle24@gmail.com  
+Should any issues arise while running the programme:
+ ~ Use the issues board on github for the project you have issues with, you can assign me and I will comment back as soon as I get the time. 
+OR :  You can email me at lindokuhlerajuili@gmail.com with the name of the project as the subject.
 
