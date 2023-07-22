@@ -16,13 +16,7 @@ database_path = 'urlshortner.db'  # Replace with the desired database file path
 
 # try:
 #     # Create the required tables if they don't exist
-#     cursor.execute('''
-#         CREATE TABLE shortenedURL (
-#         id INTEGER PRIMARY KEY AUTOINCREMENT,
-#         original_url TEXT NOT NULL,
-#         shortened_url TEXT NOT NULL
-#     )
-#     ''')
+#     
 
 
 #     # Commit the changes
@@ -44,6 +38,15 @@ def add_url(original_url, shortened_url):
     try:
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
+        
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS shortenedURL (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        original_url TEXT NOT NULL,
+        shortened_url TEXT NOT NULL
+        )
+        ''')
+
         cursor.execute('''
             INSERT INTO shortenedURL (original_url, shortened_url)
             VALUES (?, ?)
@@ -64,3 +67,18 @@ def delete_url():
 
 def show_stored_url():
     pass
+
+
+def fetch_mapped_url(short_code):
+    # Connect to the SQLite database
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # Retrieve the original URL from the database based on the short code
+    cursor.execute('SELECT original_url FROM shortenedURL WHERE shortened_url = ?', (short_code,))
+    result = cursor.fetchone()
+
+    # Close the connection
+    conn.close()
+
+    return result
