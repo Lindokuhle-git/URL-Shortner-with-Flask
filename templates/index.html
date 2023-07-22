@@ -7,13 +7,15 @@
     
 </head>
 <body>
+    <h1>URL Shortener</h1>
     <form action="/" method="post">
-        <input type="text" name="input" placeholder="Enter your url: ">
-        <button type="submit">Submit</button>
+        <label for="input">Enter the long URL:</label>
+        <input type="text" name="input" >
+        <button type="submit">Shorten URL</button>
     </form>
     <div>
         {% if result %}
-            Result: {{ result }}
+            <p>Shortened URL: <a href="{{ result }}">{{ result }}</a></p>
         {% endif %}
     </div>
     
