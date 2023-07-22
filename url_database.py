@@ -66,7 +66,15 @@ def delete_url():
 
 
 def show_stored_url():
-    pass
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM shortenedURL')
+    data = cursor.fetchall()
+
+    # Close the connection
+    conn.close()
+
+    return data
 
 
 def fetch_mapped_url(short_code):

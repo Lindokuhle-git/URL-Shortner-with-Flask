@@ -17,6 +17,10 @@
         {% if result %}
             <p>Shortened URL: <a href="{{ result }}">{{ result }}</a></p>
         {% endif %}
+    </div id="history">
+    <a href="{{url_for('show_old_links') }}">View Old Links</a>
+    <div>
+
     </div>
     
 </body>
