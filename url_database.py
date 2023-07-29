@@ -1,23 +1,55 @@
+from flask import g
 import sqlite3
 import os
 
 database_path = 'urlshortner.db'  # Replace with the desired database file path
 
-# Check if the database file exists
-if os.path.exists(database_path):
-    # Open the existing database
-    conn = sqlite3.connect(database_path)
-else:
-    # Create a new database and connect to it
-    conn = sqlite3.connect(database_path)
+def get_db():
+    # if hasattr(get_db, 'db'):
+    #     return get_db.db
+    
+    # db = sqlite3.connect(database_path, check_same_thread=False)
+    # db.row_factory = sqlite3.Row
+    # get_db.db = db
+    # return db
+    conn = None
 
-# Create a cursor object to execute SQL commands
-cursor = conn.cursor()
+    if os.path.exists(database_path):
+    # Open the existing database
+        conn = sqlite3.connect(database_path, check_same_thread=False)
+    else:
+        # Create a new database and connect to it
+        conn = sqlite3.connect(database_path)
+    return conn
+
+def close_db():
+    db = getattr(get_db, 'db', None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    db = get_db()
+    with open('schema.sql', 'r') as f:
+        db.executescript(f.read())
+
+
+        
+# # Check if the database file exists
+# if os.path.exists(database_path):
+#     # Open the existing database
+#     conn = sqlite3.connect(database_path, check_same_thread=False)
+# else:
+#     # Create a new database and connect to it
+#     conn = sqlite3.connect(database_path)
+
+# # Create a cursor object to execute SQL commands
+# cursor = conn.cursor()
 
 
 def add_url(original_url, shortened_url):
     try:
-        
+        db = get_db()
+        cursor = db.cursor()
         
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS shortenedURL (
@@ -32,12 +64,11 @@ def add_url(original_url, shortened_url):
             VALUES (?, ?)
         ''', (original_url, shortened_url))
 
-        conn.commit()
+        db.commit()
     
     except sqlite3.Error as e:
         print(f"An error occurred: {e}") 
-    finally:
-        conn.close()    
+      
 
 
 def delete_url():
@@ -46,23 +77,27 @@ def delete_url():
 
 
 def show_stored_url():
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('SELECT * FROM shortenedURL')
+        data = cursor.fetchall()
+        return data if data is not None else []
+       
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+        
     
-    cursor.execute('SELECT * FROM shortenedURL')
-    data = cursor.fetchall()
-
-    # Close the connection
-    conn.close()
-
-    return data
 
 
 def fetch_mapped_url(short_code):
-    
-    # Retrieve the original URL from the database based on the short code
-    cursor.execute('SELECT original_url FROM shortenedURL WHERE shortened_url = ?', (short_code,))
-    result = cursor.fetchone()
+    try:
+        db = get_db()
+        cursor = db.cursor()
 
-    # Close the connection
-    conn.close()
+        cursor.execute('SELECT original_url FROM shortenedURL WHERE shortened_url = ?', (short_code,))
+        result = cursor.fetchone()
 
-    return result
+        return result
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")

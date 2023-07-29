@@ -46,5 +46,9 @@ def generate_short_code():
     return short_code
 
 
+@app.teardown_appcontext
+def close_db(error):
+    url_database.close_db()
+
 if __name__ == '__main__':
     app.run(debug=True)
