@@ -23,9 +23,10 @@
         </tr>
         {% endfor %}
         
-    </table>>
+    </table>
     {% else %}
     <p>No data in Table yet.</p>
     {% endif %}
+    <b> </b><a href="{{url_for('delete_all_links') }}">Delete_links?</a> </b>
 </body>
 </html>

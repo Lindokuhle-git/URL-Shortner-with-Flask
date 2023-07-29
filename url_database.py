@@ -5,13 +5,7 @@ import os
 database_path = 'urlshortner.db'  # Replace with the desired database file path
 
 def get_db():
-    # if hasattr(get_db, 'db'):
-    #     return get_db.db
     
-    # db = sqlite3.connect(database_path, check_same_thread=False)
-    # db.row_factory = sqlite3.Row
-    # get_db.db = db
-    # return db
     conn = None
 
     if os.path.exists(database_path):
@@ -31,19 +25,6 @@ def init_db():
     db = get_db()
     with open('schema.sql', 'r') as f:
         db.executescript(f.read())
-
-
-        
-# # Check if the database file exists
-# if os.path.exists(database_path):
-#     # Open the existing database
-#     conn = sqlite3.connect(database_path, check_same_thread=False)
-# else:
-#     # Create a new database and connect to it
-#     conn = sqlite3.connect(database_path)
-
-# # Create a cursor object to execute SQL commands
-# cursor = conn.cursor()
 
 
 def add_url(original_url, shortened_url):
@@ -72,7 +53,14 @@ def add_url(original_url, shortened_url):
 
 
 def delete_url():
-    pass      
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('DELETE FROM shortenedURL')    
+        data = cursor.fetchall()
+        return data
+    except sqlite3.Error as e:
+        print(f"An error occured: {e}")  
 
 
 
