@@ -67,7 +67,7 @@ def show_stored_url():
     try:
         db = get_db()
         cursor = db.cursor()
-        cursor.execute('SELECT * FROM shortenedURL')
+        cursor.execute('SELECT id, shortened_url, original_url FROM shortenedURL')
         data = cursor.fetchall()
         return data if data is not None else []
        
