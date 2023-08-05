@@ -39,6 +39,13 @@ def show_old_links():
     data = url_database.show_stored_url()
     return render_template('old_links.html', data = data)
 
+
+@app.route('/old_links', methods = ["POST"])
+def delete_all_links():
+    if request.method == "POST":
+        url_database.delete_url()
+    return redirect('/old_links')
+
 def generate_short_code():
     # Generate a random 6-character short code using uppercase letters, lowercase letters, and digits
     characters = string.ascii_letters + string.digits
