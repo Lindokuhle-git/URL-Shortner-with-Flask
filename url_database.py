@@ -57,8 +57,7 @@ def delete_url():
         db = get_db()
         cursor = db.cursor()
         cursor.execute('DELETE FROM shortenedURL')    
-        data = cursor.fetchall()
-        return data
+        db.commit()
     except sqlite3.Error as e:
         print(f"An error occured: {e}")  
 
