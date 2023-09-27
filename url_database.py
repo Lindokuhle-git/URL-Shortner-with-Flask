@@ -1,7 +1,10 @@
 from flask import g
 import sqlite3
 import os
+from simple_crud._database_handler import CONFIG_DB_NAME, TEXT, SQL_INTEGER
+from simple_crud import create_db, delete_db, insert_db, update_db, read_db
 
+CONFIG_DB_NAME = "urlshortner.db"
 database_path = 'urlshortner.db'  # Replace with the desired database file path
 
 def get_db():
